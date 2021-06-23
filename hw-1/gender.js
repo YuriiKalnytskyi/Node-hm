@@ -11,6 +11,7 @@ fs.mkdir(`${__dirname}/boys`, {recursive: true}, (err) => {
         console.log('---------- Error ------------');
     }
 })
+
 fs.mkdir(`${__dirname}/girls`, {recursive: true}, (err) => {
     if (err) {
         console.log('---------- Error ------------');
@@ -31,8 +32,6 @@ function gender(path1) {
         files.map(file => {
 
             let genderUser = require(`${path1}/${file}`)
-
-            console.log(genderUser.gender)
 
             genderUser.gender === 'male' ?
                 fs.rename(path.join(path1, file), path.join(__dirname, 'boys', file), (err) => {
