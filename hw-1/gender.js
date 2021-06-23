@@ -31,7 +31,7 @@ function gender(path1) {
 
         files.map(file => {
 
-            let genderUser = require(`${path1}/${file}`)
+            const genderUser = require(`${path1}/${file}`)
 
             genderUser.gender === 'male' ?
                 fs.rename(path.join(path1, file), path.join(__dirname, 'boys', file), (err) => {
