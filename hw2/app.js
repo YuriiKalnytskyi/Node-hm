@@ -23,31 +23,37 @@ app.set("views", path.join(__dirname, 'static'));
 
 app.listen(port, () => {
     console.log(`App listen ${port}`);
-})
+});
 
 app.get('/users', (req, res) => {
-    res.render('users', {users})
-})
+    res.render('users', {users});
+});
+
+app.get('/user/:login', (req, res) => {
+    const {login}=req.params;
+    const user  = users.find((value => value.login ===login));
+    res.render('user', {user});
+});
 
 app.get('/registration', (req, res) => {
-    res.render('Registration')
-})
+    res.render('registration');
+});
 
 app.get('/login', (req, res) => {
-    res.render('Login')
-})
+    res.render('login');
+});
 
 app.get('/error_login', (req, res) => {
-    res.render('Error_login')
-})
+    res.render('error_login');
+});
 
 app.get('/error_registration', (req, res) => {
-    res.render('error_registration')
-})
+    res.render('error_registration');
+});
 
 app.get('/content', (req, res) => {
-    res.render('content')
-})
+    res.render('content');
+});
 
 app.post('/registration', (req, res) => {
 
@@ -57,25 +63,25 @@ app.post('/registration', (req, res) => {
     const user = users.find(user => (user.login === login));
 
     if (user) {
-        res.render('error_registration')
+        res.render('error_registration');
     }
     if (!user) {
         users.map((user1) => {
-            arr.push(user1)
+            arr.push(user1);
             return user1
         })
+        arr.push(userNew);
 
-        arr.push(userNew)
-
-        const newUsers = JSON.stringify(arr)
+        const newUsers = JSON.stringify(arr);
 
         fs.writeFile(fail, newUsers, (err) => {
-            console.log(err)
+            console.log(err);
         })
-        res.render('users', {users})
+        // res.render('users', {users});
+        res.redirect("/login");
     }
 
-})
+});
 
 app.post('/login', (req, res) => {
 
@@ -83,8 +89,9 @@ app.post('/login', (req, res) => {
     const user = users.find(user => (user.login === login) && (user.password === password));
 
     if (!user) {
-        res.render('Error_login')
+        res.render('error_login');
     }
-    res.render('content')
-})
+
+    res.redirect(`/user/${user.login}`);
+});
 
