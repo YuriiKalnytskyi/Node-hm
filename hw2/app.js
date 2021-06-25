@@ -87,7 +87,7 @@ app.post('/login', (req, res) => {
         return ;
     }
 
-    res.redirect(`/users/${user.userId}`);
+    res.redirect(`/user/${user.userId}`);
 });
 
 function getUser(){
