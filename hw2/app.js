@@ -6,9 +6,7 @@ const path = require('path');
 const app = express();
 
 const fail = path.join(__dirname, "users", "users.json");
-const b = fs.readFileSync(fail);
-const users = JSON.parse(b.toString());
-const port = 3000
+const port = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -26,12 +24,14 @@ app.listen(port, () => {
 });
 
 app.get('/users', (req, res) => {
+    const users  =getUser();
     res.render('users', {users});
 });
 
-app.get('/user/:login', (req, res) => {
-    const {login}=req.params;
-    const user  = users.find((value => value.login ===login));
+app.get('/user/:userId', (req, res) => {
+    const {userId}=req.params;
+    const users = getUser();
+    const user = users.find((value => value.userId ===+userId));
     res.render('user', {user});
 });
 
@@ -43,12 +43,8 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
-app.get('/error_login', (req, res) => {
-    res.render('error_login');
-});
-
-app.get('/error_registration', (req, res) => {
-    res.render('error_registration');
+app.get('/error', (req, res) => {
+    res.render('error');
 });
 
 app.get('/content', (req, res) => {
@@ -56,42 +52,45 @@ app.get('/content', (req, res) => {
 });
 
 app.post('/registration', (req, res) => {
-
-    const userNew = req.body;
-    const {login} = req.body
+    const users = getUser();
+    const { name,lastname ,  age, login  ,password} = req.body;
     const arr = [];
     const user = users.find(user => (user.login === login));
 
     if (user) {
-        res.render('error_registration');
+        res.render('error' ,{error:'This login already exists'});
     }
     if (!user) {
         users.map((user1) => {
             arr.push(user1);
             return user1
-        })
-        arr.push(userNew);
+        });
+        // arr.push(userNew );
+        arr.push({name , lastname , age , login  ,password , userId:Date.now()})
 
         const newUsers = JSON.stringify(arr);
 
         fs.writeFile(fail, newUsers, (err) => {
             console.log(err);
-        })
-        // res.render('users', {users});
+        });
         res.redirect("/login");
     }
-
 });
 
 app.post('/login', (req, res) => {
-
+    const users = getUser();
     const {login, password} = req.body;
     const user = users.find(user => (user.login === login) && (user.password === password));
 
     if (!user) {
-        res.render('error_login');
+        res.render('error' ,{error:"login or password is not correct, try again"});
+        return ;
     }
 
-    res.redirect(`/user/${user.login}`);
+    res.redirect(`/user/${user.userId}`);
 });
+
+function getUser(){
+    return JSON.parse(fs.readFileSync(fail).toString());
+}
 
