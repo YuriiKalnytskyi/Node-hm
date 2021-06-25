@@ -28,7 +28,7 @@ app.get('/users', (req, res) => {
     res.render('users', {users});
 });
 
-app.get('/user/:userId', (req, res) => {
+app.get('/users/:userId', (req, res) => {
     const {userId}=req.params;
     const users = getUser();
     const user = users.find((value => value.userId ===+userId));
