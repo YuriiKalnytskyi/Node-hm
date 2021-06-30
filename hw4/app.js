@@ -40,7 +40,7 @@ function _notFoundHandler(err, req, res, next) {
 }
 
 function _mongooseConnector() {
-  mongoose.connect('mongodb+srv://user:user@delet.dt8x1.mongodb.net/test', { useNewUrlParser: true, useUnifiedTopology: true })
+  mongoose.connect('mongodb://localhost:27017/hw4', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('hi'))
     .catch((err) => console.log(err));
 }
