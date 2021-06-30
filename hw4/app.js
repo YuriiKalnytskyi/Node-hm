@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 const { userRouter } = require('./routes');
+const { constants, code } = require('./constants');
 
 const app = express();
 
@@ -17,11 +18,8 @@ app.use('/users', userRouter);
 app.use('*', _notFoundHandler);
 app.use(_hadleErrors);
 
-// app.listen(3000, () => {
-//   console.log(`App listen ${port}`);
-// });
-app.listen(5000, () => {
-  console.log('app lissen 3000');
+app.listen(constants.PORT, () => {
+  console.log(`app lissen ${constants.PORT} `);
 });
 
 // eslint-disable-next-line no-unused-vars
@@ -36,7 +34,7 @@ function _hadleErrors(err, req, res, next) {
 
 function _notFoundHandler(err, req, res, next) {
   next({
-    status: err.status || 404,
+    status: err.status || code.NOT_FOUND,
     message: err.message || 'Rout not fond'
   });
 }
