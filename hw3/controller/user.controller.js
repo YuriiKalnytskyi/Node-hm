@@ -2,8 +2,8 @@ const { userService } = require('../service');
 // const { errorMessages } = require('../constant');
 
 module.exports = {
-  getAllUser: (req, res) => {
-    const users = userService.allUser();
+  getAllUser: async (req, res) => {
+    const users = await userService.allUser();
     res.json(users);
   },
 
@@ -16,4 +16,11 @@ module.exports = {
     res.json('user create');
   },
 
+  deleteUserId: async (req, res) => {
+    const { userId } = req.params;
+
+    await userService.deleteUserId(userId);
+
+    res.json('user delete');
+  },
 };
