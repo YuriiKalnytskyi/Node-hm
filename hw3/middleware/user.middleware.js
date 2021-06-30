@@ -3,29 +3,38 @@ const { errorMessages } = require('../constant');
 
 module.exports = {
   checkIsUser: (req, res, next) => {
-    const { userId } = req.params;
+    try {
+      const { userId } = req.params;
 
-    const userById = userService.getUserId(userId);
+      const userById = userService.getUserId(userId);
 
-    if (!userById) {
-      throw new Error(errorMessages.NOT_FOUND);
+      if (!userById) {
+        throw new Error(errorMessages.NOT_FOUND);
+      }
+
+      req.user = userById;
+
+      next();
+    } catch (e) {
+      res.json(e.message);
     }
-
-    req.user = userById;
-
-    next();
   },
 
-  userValid: (req, res, next) => {
-    const { name } = req.body;
-    const allUser = userService.allUser();
-    const find = allUser.find((value) => value.name === name);
+  userValid: async (req, res, next) => {
+    try {
+      const { name } = req.body;
+      const allUser = await userService.allUser();
 
-    if (!find) {
-      throw new Error(errorMessages.NOT_FOUND);
+      allUser.forEach((value) => {
+        if (value.name === name) {
+          throw new Error(errorMessages.NOT_FOUND);
+        }
+      });
+
+      next();
+    } catch (e) {
+      res.json(e.message);
     }
-
-    next();
   }
 
 };
