@@ -27,7 +27,7 @@ function _hadleErrors(err, req, res, next) {
   res
     .status(err.status)
     .json({
-      message: err.message || 'Unknown error',
+      message: err.message || constants.UNKNOWN_ERROR,
       customCode: err.code || 0
     });
 }
@@ -35,7 +35,7 @@ function _hadleErrors(err, req, res, next) {
 function _notFoundHandler(err, req, res, next) {
   next({
     status: err.status || code.NOT_FOUND,
-    message: err.message || 'Rout not fond'
+    message: err.message || constants.ROUTE_NOT_FOND
   });
 }
 

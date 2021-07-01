@@ -1,4 +1,3 @@
-// const { errorMessages } = require('../constant');
 const { User } = require('../dataBase');
 const { code } = require('../constants');
 
@@ -30,7 +29,7 @@ module.exports = {
     try {
       await User.findByIdAndDelete(req.params.userId);
 
-      res.status(200).json(code.DELETED);
+      res.status(code.DELETED).json('deleteUser');
     } catch (e) {
       next(e);
     }

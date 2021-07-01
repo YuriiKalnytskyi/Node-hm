@@ -21,21 +21,20 @@ module.exports = {
     }
   },
 
-  // userValid: async (req, res, next) => {
-  //   try {
-  //     const { name } = req.body;
-  //     const allUser = await userService.allUser();
-  //
-  //     allUser.forEach((value) => {
-  //       if (value.name === name) {
-  //         throw new Error(errorMessages.NOT_FOUND);
-  //       }
-  //     });
-  //
-  //     next();
-  //   } catch (e) {
-  //     res.json(e.message);
-  //   }
-  // }
+  userValid: async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      const allUser = await User.find({});
+      const findEmail = allUser.find((value) => value.email === email);
+
+      if (findEmail) {
+        throw new ErrorHandler(400, errorMessages.USER_EMAIL.message, errorMessages.USER_EMAIL.code);
+      }
+
+      next();
+    } catch (e) {
+      res.json(e.message);
+    }
+  }
 
 };
