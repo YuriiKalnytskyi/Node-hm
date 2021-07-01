@@ -27,7 +27,7 @@ function _hadleErrors(err, req, res, next) {
   res
     .status(err.status)
     .json({
-      message: err.message || 'Unknown error',
+      message: err.message || constants.UNKNOWN_ERROR,
       customCode: err.code || 0
     });
 }
@@ -35,12 +35,12 @@ function _hadleErrors(err, req, res, next) {
 function _notFoundHandler(err, req, res, next) {
   next({
     status: err.status || code.NOT_FOUND,
-    message: err.message || 'Rout not fond'
+    message: err.message || constants.ROUTE_NOT_FOND
   });
 }
 
 function _mongooseConnector() {
-  mongoose.connect('mongodb+srv://user:user@delet.dt8x1.mongodb.net/test', { useNewUrlParser: true, useUnifiedTopology: true })
+  mongoose.connect('mongodb://localhost:27017/hw4', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('hi'))
     .catch((err) => console.log(err));
 }
