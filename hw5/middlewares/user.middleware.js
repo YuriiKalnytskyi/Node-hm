@@ -2,6 +2,7 @@ const { ErrorHandler, errorMessages } = require('../errors');
 const { code } = require('../constants');
 const { User } = require('../dataBase');
 const { userServices } = require('../services');
+const { userCreateValidator } = require('../validators');
 
 module.exports = {
   checkIsUser: (req, res, next) => {
@@ -17,25 +18,52 @@ module.exports = {
       req.user = userById;
 
       next();
-    } catch (err) {
-      next(err);
+    } catch (e) {
+      next(e);
     }
   },
 
-  userValid: async (req, res, next) => {
+  checkIsUserEmail: async (req, res, next) => {
     try {
       const { email } = req.body;
-      const allUser = await User.find({});
-      const findEmail = allUser.find((value) => value.email === email);
 
-      if (findEmail) {
-        throw new ErrorHandler(400, errorMessages.USER_EMAIL.message, errorMessages.USER_EMAIL.code);
+      const user = await User.findOne({ email });
+      const { error } = await userCreateValidator.validate(req.body);
+
+      if (error) {
+        throw new ErrorHandler(code.NOT_FOUND, error.details[0].message, errorMessages.RECORD_NOT_FOUND.code);
+      }
+
+      if (user) {
+        throw new ErrorHandler(code.DAD_REQUEST, errorMessages.USER_EMAIL.message, errorMessages.USER_EMAIL.code);
       }
 
       next();
     } catch (e) {
-      res.json(e.message);
+      next(e);
     }
-  }
+  },
+  updateUser: async (req, res, next) => {
+    try {
+      // const { email } = req.body;
+      const { userId } = req.params;
+      // const user = await User.findOne({ email });
+      const user = await User.findOne({ _id: userId });
+
+      const { error } = await userCreateValidator.validate(req.body);
+
+      if (error) {
+        throw new ErrorHandler(code.NOT_FOUND, error.details[0].message, errorMessages.RECORD_NOT_FOUND.code);
+      }
+
+      if (!user) {
+        throw new ErrorHandler(code.DAD_REQUEST, errorMessages.RECORD_NOT_FOUND.message, errorMessages.RECORD_NOT_FOUND.code);
+      }
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
 
 };
