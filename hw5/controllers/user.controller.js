@@ -42,9 +42,9 @@ module.exports = {
   },
   updateUserById: async (req, res, next) => {
     try {
-      const { userId } = req.params;
-      await userServices.updateUserById(userId, req.body);
-      res.status(code.UPDATED).json(`user update ${userId}`);
+      await userServices.updateUserById(req.params.userId, req.body);
+
+      res.status(code.UPDATED).json('user update');
     } catch (e) {
       next(e);
     }
