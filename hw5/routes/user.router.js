@@ -4,9 +4,9 @@ const { userController } = require('../controllers');
 const { userMiddleware } = require('../middlewares');
 
 router.get('/', userController.getAllUser);
-router.get('/:userId', userMiddleware.checkIsUser, userController.getUserId);
 router.post('/', userMiddleware.checkIsUserEmail, userController.createUser);
-router.delete('/:userId', userMiddleware.checkIsUser, userController.deleteUserId);
-router.patch('/:userId', userMiddleware.updateUser, userController.updateUserById);
+router.get('/:userId', userMiddleware.checkUserIdValid, userController.getUserId);
+router.delete('/:userId', userMiddleware.checkUserIdValid, userController.deleteUserId);
+router.patch('/:userId', userMiddleware.checkUserIdValid, userMiddleware.updateUser, userController.updateUserById);
 
 module.exports = router;

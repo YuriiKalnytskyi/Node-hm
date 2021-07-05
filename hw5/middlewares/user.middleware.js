@@ -2,21 +2,23 @@ const { ErrorHandler, errorMessages } = require('../errors');
 const { code } = require('../constants');
 const { User } = require('../dataBase');
 const { userServices } = require('../services');
-const { userCreateValidator, userApdateValidator } = require('../validators');
+const { userCreateValidator, userApdateValidator, idValidator } = require('../validators');
 
 module.exports = {
-  checkIsUser: (req, res, next) => {
+  checkUserIdValid: async (req, res, next) => {
     try {
       const { userId } = req.params;
 
-      const userById = userServices.findUserId(userId);
+      const { error } = await idValidator.validate(req.body);
 
-      if (!userById) {
+      const user = await userServices.findUserId({ _id: userId });
+
+      if (error) {
+        throw new ErrorHandler(code.DAD_REQUEST, error.details[0].message);
+      }
+      if (!user) {
         throw new ErrorHandler(code.NOT_FOUND, errorMessages.RECORD_NOT_FOUND.message, errorMessages.RECORD_NOT_FOUND.code);
       }
-
-      req.user = userById;
-
       next();
     } catch (e) {
       next(e);
@@ -58,7 +60,6 @@ module.exports = {
       if (!user) {
         throw new ErrorHandler(code.DAD_REQUEST, errorMessages.RECORD_NOT_FOUND.message, errorMessages.RECORD_NOT_FOUND.code);
       }
-
       req.user = user;
       next();
     } catch (e) {
