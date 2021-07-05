@@ -2,7 +2,7 @@ const { ErrorHandler, errorMessages } = require('../errors');
 const { code } = require('../constants');
 const { User } = require('../dataBase');
 const { userServices } = require('../services');
-const { userCreateValidator } = require('../validators');
+const { userCreateValidator, userApdateValidator } = require('../validators');
 
 module.exports = {
   checkIsUser: (req, res, next) => {
@@ -45,12 +45,11 @@ module.exports = {
   },
   updateUser: async (req, res, next) => {
     try {
-      // const { email } = req.body;
       const { userId } = req.params;
-      // const user = await User.findOne({ email });
+
       const user = await User.findOne({ _id: userId });
 
-      const { error } = await userCreateValidator.validate(req.body);
+      const { error } = await userApdateValidator.validate(req.body);
 
       if (error) {
         throw new ErrorHandler(code.NOT_FOUND, error.details[0].message, errorMessages.RECORD_NOT_FOUND.code);
@@ -60,6 +59,7 @@ module.exports = {
         throw new ErrorHandler(code.DAD_REQUEST, errorMessages.RECORD_NOT_FOUND.message, errorMessages.RECORD_NOT_FOUND.code);
       }
 
+      req.user = user;
       next();
     } catch (e) {
       next(e);
