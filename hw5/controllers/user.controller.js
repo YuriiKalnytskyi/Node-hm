@@ -42,6 +42,12 @@ module.exports = {
   },
   updateUserById: async (req, res, next) => {
     try {
+      const { password } = req.body;
+
+      if (password) {
+        const hashedPassword = await passwordHesher.hash(password);
+        req.body = { ...req.body, password: hashedPassword };
+      }
       await userServices.updateUserById(req.params.userId, req.body);
 
       res.status(code.UPDATED).json('user update');
