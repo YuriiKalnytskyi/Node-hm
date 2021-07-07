@@ -5,5 +5,7 @@ module.exports = {
   DB_CONNECTION_URL: process.env.DB_CONNECTION_URL || 'mongodb://localhost:27017/hw',
   ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET || 'Secret',
   REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || 'SuperSecret',
-  AUTHORIZATION: 'Authorization'
+  AUTHORIZATION: 'Authorization',
+  ACCESS_TOKEN_TIME: '10m',
+  REFRESH_TOKEN_TIME: '30d'
 };
