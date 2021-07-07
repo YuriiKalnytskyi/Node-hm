@@ -1,14 +1,10 @@
 const { passwordHesher, authHelper } = require('../helpers');
 const { OAuth } = require('../dataBase');
-const { ErrorHandler, errorMessages } = require('../errors');
 const { constants: { AUTHORIZATION }, code } = require('../constants');
 
 module.exports = {
   login: async (req, res, next) => {
     try {
-      if (!req.user) {
-        throw new ErrorHandler(code.DAD_REQUEST, errorMessages.EMAIL_PASSWORD.message, errorMessages.EMAIL_PASSWORD.code);
-      }
       const { password: hashPassword, _id } = req.user;
       const { password } = req.body;
 

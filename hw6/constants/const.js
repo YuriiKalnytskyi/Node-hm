@@ -7,5 +7,7 @@ module.exports = {
   REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || 'SuperSecret',
   AUTHORIZATION: 'Authorization',
   ACCESS_TOKEN_TIME: '10m',
-  REFRESH_TOKEN_TIME: '30d'
+  REFRESH_TOKEN_TIME: '30d',
+  ACCESS: 'access',
+  REFRESH: 'refresh'
 };
