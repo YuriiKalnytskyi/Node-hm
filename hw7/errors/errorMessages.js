@@ -23,4 +23,8 @@ module.exports = {
     message: 'Wrong token',
     code: '401.1'
   },
+  WRONG_TEMPLATE: {
+    message: 'Wrong template',
+    code: '200.1'
+  },
 };
