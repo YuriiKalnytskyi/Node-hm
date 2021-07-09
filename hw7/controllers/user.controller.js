@@ -26,8 +26,7 @@ module.exports = {
       const hashedPassword = await passwordHesher.hash(password);
       const createdUser = await userServices.createUser({ ...req.body, password: hashedPassword });
 
-      // await mailServices.sendMail(email, emailActionsEnum.WELCOME, { userName: email });
-      await mailServices.sendMail(email);
+      await mailServices.sendMail(email, emailActionsEnum.WELCOME, { userName: email });
 
       res.status(code.CREATED).json(createdUser);
     } catch (e) {

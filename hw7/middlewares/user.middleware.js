@@ -20,6 +20,7 @@ module.exports = {
         throw new ErrorHandler(code.NOT_FOUND, RECORD_NOT_FOUND.message, RECORD_NOT_FOUND.code);
       }
 
+      req.user = user;
       next();
     } catch (e) {
       next(e);
