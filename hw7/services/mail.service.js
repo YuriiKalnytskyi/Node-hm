@@ -3,7 +3,7 @@ const path = require('path');
 const EmailTemplates = require('email-templates');
 
 const { EMAIL, PASSWORD } = require('../constants/const');
-const { ErrorHandler } = require('../errors');
+const { ErrorHandler, errorMessages } = require('../errors');
 const templateInfo = require('../email-templaes');
 
 const templateParser = new EmailTemplates({
@@ -24,7 +24,7 @@ const sendMail = async (userMail, action, context = {}) => {
   const templateToSend = templateInfo[action];
 
   if (!templateToSend) {
-    throw new ErrorHandler(200, 'Wrong template', 200.1);
+    throw new ErrorHandler(200, errorMessages.WRONG_TEMPLATE.message, errorMessages.WRONG_TEMPLATE.code);
   }
 
   const html = await templateParser.render(templateToSend.templateName, context);
