@@ -87,33 +87,4 @@ module.exports = {
       next(e);
     }
   },
-  addGallery: async (req, res, next) => {
-    try {
-      const { photos, user: { _id, photo } } = req;
-      let photoArr = [];
-
-      for (let i = 0; i < photo.length; i++) {
-        photoArr = photo[i];
-      }
-
-      if (photos) {
-        for (let i = 0; i < photos.length; i++) {
-          // const photo1 = photos[i];
-
-          // eslint-disable-next-line no-await-in-loop
-          const { finalPath, photoPath } = await fileHelper.fileDownload(photos[i].name, _id, 'users', 'photo');
-
-          // eslint-disable-next-line no-await-in-loop
-          await photos[i].mv(finalPath);
-
-          photoArr.push(photoPath);
-        }
-        await userServices.updateUserById({ _id }, { photo: photoArr });
-        res.json('photo added');
-      }
-    } catch (e) {
-      next(e);
-    }
-  }
-
 };

@@ -16,8 +16,8 @@ router.post('/:userId/avatar',
     fileMiddleware.checkAvatar,
     userController.addAvatar);
 
-router.post('/:userId/photos',
-    userMiddleware.checkUserIdValid,
-    fileMiddleware.checkFiles,
-    userController.addGallery);
+// router.post('/:userId/photos',
+//     userMiddleware.checkUserIdValid,
+//     fileMiddleware.checkFiles,
+//     userController.addGallery);
 module.exports = router;
